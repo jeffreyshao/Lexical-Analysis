@@ -36,11 +36,8 @@ int main(int argc, const char* argv[]){
   Stack* Delimiters = new Stack();
   Stack* SyntaxErrors = new Stack();
 
-  //The file name is based on the command line argument
-  string fileName = argv[1];
-
   //Read in the file
-  ifstream file(fileName);
+  ifstream file(argv[1]);
 
   //This is used to make the first stack where everything is stored
   string str;
