@@ -48,7 +48,7 @@ public:
   void pop(){
     //if the stack is empty
     if(stackPtr == NULL){
-      cout<<"Ain't shit here" <<endl;
+      cout<<"Nothing to pop" <<endl;
     }
     else{
       item* p = stackPtr;

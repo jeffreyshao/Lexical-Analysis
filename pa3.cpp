@@ -28,8 +28,8 @@ int main(int argc, const char* argv[]){
   //We will make use of multiple stacks to determine the outputs
   Stack* Main = new Stack();               //orignal stack
   Stack* Temp = new Stack();               //temporary stack for symbol-free strings
-  Stack* KeywordsT = new Stack();          //Initial Keyword Stack
-  Stack* Keywords = new Stack();           //Keyword Stack in the correct order
+  Stack* Keywords = new Stack();           //Main Keywords Stack
+  Stack* KeywordsT = new Stack();          //Re-ordered Keywords Stack
   Stack* Operators = new Stack();          //Rest are self-explanatory
   Stack* Identifiers = new Stack();
   Stack* Constants = new Stack();
@@ -99,7 +99,8 @@ int main(int argc, const char* argv[]){
             }
             node.replace(pos,1," ");
           }
-          //any instance of "--","**","//", etc. will just be compiled as operators listed twice
+          /*any instance of "--","**","//", etc. will be considered operators
+            entered in twice*/
           else if (comp == "*"){
             present = Operators->exists(Operators, comp);
             if(!present){
@@ -169,6 +170,7 @@ int main(int argc, const char* argv[]){
   }
 
   //2. Process the temporary stack and sort its contents accordingly
+
   while(Temp->getStackPtr(Temp)){
     node = Temp->read();
     //this determines if the string is all lowercase or all numbers
@@ -233,7 +235,8 @@ int main(int argc, const char* argv[]){
 
   //3. Determine the nested loop depth
 
-  //Put all keywords into the main Keywords Stack so that they're in the right order
+  /*Reorder the Keywords Stack. This way, the nodes are listed in the order
+    they appear in the .txt file*/
   Keywords->swap(Keywords, KeywordsT);
   while(KeywordsT->getStackPtr(KeywordsT)){
     node = KeywordsT->read();
@@ -249,7 +252,7 @@ int main(int argc, const char* argv[]){
         //then you update the max depth
         maxDepth = depth;
       }
-      //and decrease the depth number, for future comparisons' sake
+      //Decrease the depth number, for future comparisons' sake
       if(depth !=0){
         depth--;
       }
