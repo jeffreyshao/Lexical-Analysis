@@ -11,7 +11,8 @@ using namespace std;
 int main(int argc, const char* argv[]){
 
   //Symbols that may need to be separated from "variables"
-  string symbols[12] = {"(",")",",",";","++","--","*","/","%","+","-","="};
+  //Anything not explicitly listed I don't count. Parenthesis will be deleted though
+  string symbols[10] = {"(",")",",",";","++","*","/","+","-","="};
 
   //Assorted variables used
   int pos;                                 //used to determine position of symbol
@@ -58,7 +59,7 @@ int main(int argc, const char* argv[]){
   while(Main->getStackPtr(Main)){
     //take in the first node
     node = Main->read();
-    for(int i=0; i<12; i++){               //cycle through all symbols
+    for(int i=0; i<10; i++){               //cycle through all symbols
       string sym = symbols[i];
       //because ++ and -- 2 characters, we deal with it elsewhere
       if(symbols[i].length() == 1){
@@ -101,7 +102,7 @@ int main(int argc, const char* argv[]){
             }
             node.replace(pos,1," ");
           }
-          //any instance of "**","//", etc. will just be compiled as operators listed twice
+          //any instance of "--","**","//", etc. will just be compiled as operators listed twice
           else if (comp == "*"){
             present = Operators->exists(Operators, comp);
             if(!present){
@@ -132,20 +133,13 @@ int main(int argc, const char* argv[]){
           }
         }
       }
-      //used for ++ and --
+      //used for ++
       else{
         if((pos = node.find(sym)) != string::npos){
           //take the substr up to 2 spots now
           string comp = node.substr(pos, 2);
           //and do the same as before
           if (comp == "++"){
-            present = Operators->exists(Operators, comp);
-            if(!present){
-              Operators->push(comp);
-            }
-            node.replace(pos,2," ");
-          }
-          if (comp == "--"){
             present = Operators->exists(Operators, comp);
             if(!present){
               Operators->push(comp);
